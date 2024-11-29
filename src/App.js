@@ -1,25 +1,50 @@
-import logo from './logo.svg';
-import './App.css';
+
+import { useEffect, useState } from 'react'
+import './App.css'
+import Login from './component/Login'
+import Profile from './component/Profile'
+import { ThemeProvider } from './component/Themse'
+import UserContextProvider from './context/UserContextProvider'
+import ThemeBtn from './component/ThemeButton'
+import Card from './component/Card'
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const [themeMode,setThemeMode]=useState('light')
+const lighttheme=()=>{
+  setThemeMode('light')
+}
+const darktheme=()=>{
+  setThemeMode('dark')
 }
 
-export default App;
+useEffect(()=>{
+  document.querySelector('html').classList.remove("light","dark")
+  document.querySelector('html').classList.add(themeMode)
+},[themeMode])
+
+  return (
+    // <UserContextProvider>
+    //   <h1>React with Chai and share is important</h1>
+    //   <Login />
+    //   <Profile />
+    // </UserContextProvider>
+    <>
+      <ThemeProvider value={{themeMode,lighttheme,darktheme}}>
+        <div className="flex flex-wrap min-h-screen items-center">
+          <div className="w-full">
+            <div className="w-full max-w-sm mx-auto flex justify-end mb-4">
+              <ThemeBtn/>
+            </div>
+
+            <div className="w-full max-w-sm mx-auto">
+                <Card/>
+            </div>
+          </div>
+        </div>
+      </ThemeProvider>
+
+    </>
+  )
+}
+
+export default App
